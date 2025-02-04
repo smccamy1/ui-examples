@@ -99,6 +99,7 @@
             .attr("class", "node")
             .attr("r", d => d.radius)
             .attr("fill", d => d.radius > 10 ? "orange" : "steelblue")
+            .on("click", (event, d) => alert(d.id))
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
