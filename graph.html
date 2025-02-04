@@ -30,6 +30,7 @@
     <svg width="800" height="600"></svg>
     <dialog id="nodeDialog">
         <p id="nodeName"></p>
+        <p id="nodeDetails"></p>
         <button id="closeDialog">Close</button>
     </dialog>
     <script>
@@ -38,22 +39,22 @@
               height = +svg.attr("height");
 
         const nodes = [
-            { id: "Cow" },
-            { id: "Chicken" },
-            { id: "Pig" },
-            { id: "Horse" },
-            { id: "Dog" },
-            { id: "Cat" },
-            { id: "Sheep" },
-            { id: "Goat" },
-            { id: "Mammal" },
-            { id: "Bird" },
-            { id: "Omnivore" },
-            { id: "Herbivore" },
-            { id: "Fish" },
-            { id: "Shark" },
-            { id: "Salmon" },
-            { id: "Trout" }
+            { id: "Cow", details: "A domesticated bovine animal kept for milk or meat." },
+            { id: "Chicken", details: "A domesticated bird kept for its eggs or meat." },
+            { id: "Pig", details: "A domesticated swine kept for its meat." },
+            { id: "Horse", details: "A large domesticated mammal used for riding and work." },
+            { id: "Dog", details: "A domesticated carnivorous mammal kept as a pet." },
+            { id: "Cat", details: "A small domesticated carnivorous mammal kept as a pet." },
+            { id: "Sheep", details: "A domesticated ruminant animal kept for its wool or meat." },
+            { id: "Goat", details: "A domesticated ruminant animal kept for its milk or meat." },
+            { id: "Mammal", details: "A warm-blooded vertebrate animal with hair or fur." },
+            { id: "Bird", details: "A warm-blooded egg-laying vertebrate animal with feathers." },
+            { id: "Omnivore", details: "An animal that eats both plants and animals." },
+            { id: "Herbivore", details: "An animal that feeds on plants." },
+            { id: "Fish", details: "A cold-blooded vertebrate animal that lives in water." },
+            { id: "Shark", details: "A large predatory fish with sharp teeth." },
+            { id: "Salmon", details: "A large fish that is commonly found in the North Atlantic." },
+            { id: "Trout", details: "A freshwater fish that is related to the salmon." }
         ];
 
         const links = [
@@ -111,6 +112,7 @@
             .attr("fill", d => d.radius > 10 ? "orange" : "steelblue")
             .on("click", (event, d) => {
                 document.getElementById("nodeName").textContent = d.id;
+                document.getElementById("nodeDetails").textContent = d.details;
                 document.getElementById("nodeDialog").showModal();
             })
             .call(d3.drag()
