@@ -39,41 +39,24 @@
               height = +svg.attr("height");
 
         const nodes = [
-            { id: "Cow", details: "A domesticated bovine animal kept for milk or meat." },
-            { id: "Chicken", details: "A domesticated bird kept for its eggs or meat." },
-            { id: "Pig", details: "A domesticated swine kept for its meat." },
-            { id: "Horse", details: "A large domesticated mammal used for riding and work." },
-            { id: "Dog", details: "A domesticated carnivorous mammal kept as a pet." },
-            { id: "Cat", details: "A small domesticated carnivorous mammal kept as a pet." },
-            { id: "Sheep", details: "A domesticated ruminant animal kept for its wool or meat." },
-            { id: "Goat", details: "A domesticated ruminant animal kept for its milk or meat." },
-            { id: "Mammal", details: "A warm-blooded vertebrate animal with hair or fur." },
-            { id: "Bird", details: "A warm-blooded egg-laying vertebrate animal with feathers." },
-            { id: "Omnivore", details: "An animal that eats both plants and animals." },
-            { id: "Herbivore", details: "An animal that feeds on plants." },
-            { id: "Fish", details: "A cold-blooded vertebrate animal that lives in water." },
-            { id: "Shark", details: "A large predatory fish with sharp teeth." },
-            { id: "Salmon", details: "A large fish that is commonly found in the North Atlantic." },
-            { id: "Trout", details: "A freshwater fish that is related to the salmon." }
+            { id: "1", details: { firstName: "John", lastName: "Doe", email: "john.doe@example.com" } },
+            { id: "2", details: { firstName: "Jane", lastName: "Smith", email: "jane.smith@example.com" } },
+            { id: "3", details: { firstName: "Alice", lastName: "Johnson", email: "alice.johnson@example.com" } },
+            { id: "4", details: { firstName: "Bob", lastName: "Brown", email: "bob.brown@example.com" } },
+            { id: "5", details: { firstName: "Charlie", lastName: "Davis", email: "charlie.davis@example.com" } },
+            { id: "6", details: { firstName: "David", lastName: "Wilson", email: "david.wilson@example.com" } },
+            { id: "7", details: { firstName: "Eve", lastName: "Miller", email: "eve.miller@example.com" } },
+            { id: "8", details: { firstName: "Frank", lastName: "Moore", email: "frank.moore@example.com" } }
         ];
 
         const links = [
-            { source: "Cow", target: "Mammal" },
-            { source: "Chicken", target: "Bird" },
-            { source: "Pig", target: "Mammal" },
-            { source: "Horse", target: "Mammal" },
-            { source: "Dog", target: "Mammal" },
-            { source: "Cat", target: "Mammal" },
-            { source: "Sheep", target: "Mammal" },
-            { source: "Goat", target: "Mammal" },
-            { source: "Pig", target: "Omnivore" },
-            { source: "Cow", target: "Herbivore" },
-            { source: "Horse", target: "Herbivore" },
-            { source: "Sheep", target: "Herbivore" },
-            { source: "Goat", target: "Herbivore" },
-            { source: "Shark", target: "Fish" },
-            { source: "Salmon", target: "Fish" },
-            { source: "Trout", target: "Fish" }
+            { source: "1", target: "2", label: "Friend" },
+            { source: "1", target: "3", label: "Colleague" },
+            { source: "2", target: "4", label: "Neighbor" },
+            { source: "3", target: "5", label: "Friend" },
+            { source: "4", target: "6", label: "Colleague" },
+            { source: "5", target: "7", label: "Neighbor" },
+            { source: "6", target: "8", label: "Friend" }
         ];
 
         // Calculate the degree of each node
@@ -102,6 +85,16 @@
             .enter().append("line")
             .attr("class", "link");
 
+        const linkLabel = svg.append("g")
+            .attr("class", "link-labels")
+            .selectAll("text")
+            .data(links)
+            .enter().append("text")
+            .attr("class", "link-label")
+            .attr("dy", -5)
+            .attr("dx", 5)
+            .text(d => d.label);
+
         const node = svg.append("g")
             .attr("class", "nodes")
             .selectAll("circle")
@@ -111,8 +104,8 @@
             .attr("r", d => d.radius)
             .attr("fill", d => d.radius > 10 ? "orange" : "steelblue")
             .on("click", (event, d) => {
-                document.getElementById("nodeName").textContent = d.id;
-                document.getElementById("nodeDetails").textContent = d.details;
+                document.getElementById("nodeName").textContent = `${d.details.firstName} ${d.details.lastName}`;
+                document.getElementById("nodeDetails").textContent = `Email: ${d.details.email}`;
                 document.getElementById("nodeDialog").showModal();
             })
             .call(d3.drag()
@@ -127,7 +120,7 @@
             .enter().append("text")
             .attr("dy", -15)
             .attr("dx", 15)
-            .text(d => d.id);
+            .text(d => `${d.details.firstName} ${d.details.lastName}`);
 
         simulation.on("tick", () => {
             link
@@ -135,6 +128,10 @@
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
                 .attr("y2", d => d.target.y);
+
+            linkLabel
+                .attr("x", d => (d.source.x + d.target.x) / 2)
+                .attr("y", d => (d.source.y + d.target.y) / 2);
 
             node
                 .attr("cx", d => d.x)
